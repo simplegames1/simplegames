@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>슬롯머신 도박 게임</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎰 슬롯머신 도박 게임</h1>
+    <div class="slots">
+      <span id="slot1">?</span>
+      <span id="slot2">?</span>
+      <span id="slot3">?</span>
+    </div>
+    <p>현재 금액: <span id="money">1000</span>원</p>
+    <input type="number" id="bet" placeholder="배팅 금액 입력">
+    <div class="buttons">
+      <button onclick="play()">돌리기!</button>
+      <button onclick="resetGame()">초기화</button>
+    </div>
+    <p id="result"></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
