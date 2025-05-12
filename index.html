@@ -3,7 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <title>슬롯머신 도박 게임</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .container {
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .slots span {
+      font-size: 3em;
+      margin: 0 10px;
+      padding: 10px 20px;
+      background: #444;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    input {
+      padding: 10px;
+      font-size: 1em;
+      width: 150px;
+      margin: 10px;
+    }
+    .buttons {
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: gold;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 0 5px;
+    }
+    button:hover {
+      background: orange;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -21,112 +64,64 @@
     </div>
     <p id="result"></p>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    let money = 1000;
+
+    function play() {
+      const bet = parseInt(document.getElementById('bet').value);
+      const resultText = document.getElementById('result');
+
+      if (isNaN(bet) || bet <= 0 || bet > money) {
+        resultText.innerText = "❗ 유효한 배팅 금액을 입력하세요.";
+        return;
+      }
+
+      let slot1, slot2, slot3;
+      const jackpotChance = 0.15;
+
+      if (Math.random() < jackpotChance) {
+        const luckyNumber = Math.floor(Math.random() * 10);
+        slot1 = slot2 = slot3 = luckyNumber;
+      } else {
+        slot1 = Math.floor(Math.random() * 10);
+        slot2 = Math.floor(Math.random() * 10);
+        slot3 = Math.floor(Math.random() * 10);
+      }
+
+      document.getElementById('slot1').innerText = slot1;
+      document.getElementById('slot2').innerText = slot2;
+      document.getElementById('slot3').innerText = slot3;
+
+      if (slot1 === slot2 && slot2 === slot3) {
+        money += bet * 5;
+        resultText.innerText = "🎉 잭팟! 5배 획득!";
+      } else if (slot1 === slot2 || slot2 === slot3 || slot1 === slot3) {
+        money += bet * 2;
+        resultText.innerText = "✨ 2개 일치! 2배 획득!";
+      } else {
+        money -= bet;
+        resultText.innerText = "💸 아쉽네요. 잃었습니다.";
+      }
+
+      document.getElementById('money').innerText = money;
+
+      if (money <= 0) {
+        resultText.innerText += " 게임 오버! 초기화를 눌러 다시 시작하세요.";
+        document.querySelector("button").disabled = true;
+      }
+    }
+
+    function resetGame() {
+      money = 1000;
+      document.getElementById('money').innerText = money;
+      document.getElementById('slot1').innerText = "?";
+      document.getElementById('slot2').innerText = "?";
+      document.getElementById('slot3').innerText = "?";
+      document.getElementById('result').innerText = "";
+      document.getElementById('bet').value = "";
+      document.querySelector("button").disabled = false;
+    }
+  </script>
 </body>
 </html>
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #222;
-  color: #fff;
-  text-align: center;
-  margin-top: 50px;
-}
-
-.container {
-  background: #333;
-  padding: 20px;
-  border-radius: 10px;
-  display: inline-block;
-}
-
-.slots span {
-  font-size: 3em;
-  margin: 0 10px;
-  padding: 10px 20px;
-  background: #444;
-  border-radius: 10px;
-  display: inline-block;
-}
-
-input {
-  padding: 10px;
-  font-size: 1em;
-  width: 150px;
-  margin: 10px;
-}
-
-.buttons {
-  margin-top: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 1em;
-  background: gold;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  margin: 0 5px;
-}
-
-button:hover {
-  background: orange;
-}
-let money = 1000;
-
-function play() {
-  const bet = parseInt(document.getElementById('bet').value);
-  const resultText = document.getElementById('result');
-
-  if (isNaN(bet) || bet <= 0 || bet > money) {
-    resultText.innerText = "❗ 유효한 배팅 금액을 입력하세요.";
-    return;
-  }
-
-  let slot1, slot2, slot3;
-
-  const jackpotChance = 0.15; // 15% 확률로 잭팟 발생
-
-  if (Math.random() < jackpotChance) {
-    const luckyNumber = Math.floor(Math.random() * 10);
-    slot1 = slot2 = slot3 = luckyNumber;
-  } else {
-    slot1 = Math.floor(Math.random() * 10);
-    slot2 = Math.floor(Math.random() * 10);
-    slot3 = Math.floor(Math.random() * 10);
-  }
-
-  document.getElementById('slot1').innerText = slot1;
-  document.getElementById('slot2').innerText = slot2;
-  document.getElementById('slot3').innerText = slot3;
-
-  if (slot1 === slot2 && slot2 === slot3) {
-    money += bet * 5;
-    resultText.innerText = "🎉 잭팟! 5배 획득!";
-  } else if (slot1 === slot2 || slot2 === slot3 || slot1 === slot3) {
-    money += bet * 2;
-    resultText.innerText = "✨ 2개 일치! 2배 획득!";
-  } else {
-    money -= bet;
-    resultText.innerText = "💸 아쉽네요. 잃었습니다.";
-  }
-
-  document.getElementById('money').innerText = money;
-
-  if (money <= 0) {
-    resultText.innerText += " 게임 오버! 초기화를 눌러 다시 시작하세요.";
-    document.querySelectorAll("button")[0].disabled = true;
-  }
-}
-
-function resetGame() {
-  money = 1000;
-  document.getElementById('money').innerText = money;
-  document.getElementById('slot1').innerText = "?";
-  document.getElementById('slot2').innerText = "?";
-  document.getElementById('slot3').innerText = "?";
-  document.getElementById('result').innerText = "";
-  document.getElementById('bet').value = "";
-  document.querySelectorAll("button")[0].disabled = false;
-}
-
